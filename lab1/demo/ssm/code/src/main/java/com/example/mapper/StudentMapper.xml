@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.StudentMapper">
+    <!-- resultMap用于实现映射结果集 -->
+    <resultMap id="BaseResultMap" type="com.example.pojo.Student">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+        <result column="studentID" property="studentID" jdbcType="VARCHAR"/>
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 插入学生信息 -->
+    <insert id="create" parameterType="Student">
+        insert into tb_student(
+            name,
+            telephone,
+            studentID,
+            nickname)
+        values (
+            #{name},
+            #{telephone},
+            #{studentID},
+            #{nickname}
+        )
+    </insert>
+
+    <!-- 根据id删除信息的方法 -->
+    <delete id="delete" parameterType="Long">
+        delete from tb_student where id = #{id}
+    </delete>
+
+    <!-- 根据学生id查询信息的方法 -->
+    <select id="findById" parameterType="Long" resultType="Student">
+        select * from tb_student where id = #{id}
+    </select>
+
+    <!-- 更新学生信息的方法 -->
+    <update id="update" parameterType="Student">
+        update tb_student set
+        id = #{id},
+        name = #{name},
+        telephone = #{telephone},
+        studentID = #{studentID},
+        nickname = #{nickname}
+        where id = #{id}
+    </update>
+
+    <!--分页-条件查询-->
+    <select id="findByPage" parameterType="com.example.pojo.Student" resultMap="BaseResultMap">
+        SELECT * FROM tb_student WHERE 1=1
+        <if test="name != null">
+            AND name LIKE CONCAT('%',#{name},'%')
+        </if>
+        <if test="telephone != null">
+            AND telephone LIKE CONCAT('%', #{telephone}, '%')
+        </if>
+    </select>
+</mapper>
