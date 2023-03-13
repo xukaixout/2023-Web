@@ -1,13 +1,14 @@
-# 高级Web技术Lab 1： Docker部署
+# 高级Web技术Lab 1： 云计算学习和Web项目部署实践
 
 ## 任务说明
 
-1. 注册使用AWS Educate账号，完成指定学习任务
+1. 注册使用AWS Educate账号，完成指定上机任务（Introduction to Cloud101 lab）并拿到徽章     （30%）
 2. 连接并配置服务器
-3. 部署给出的项目
-4. 成功配置Docker（可选）
+3. 部署给出的项目（部署项目根据选择的课程PJ，二选一）  （60%）
+选择Web3D项目的建议部署联网五子棋项目，选择数字藏品项目的建议部署SSM项目。
+4. 成功配置Docker并使用Docker部署项目（10%）
 
-> 提交截止时间：2023.3.31
+> 将完成的任务写个1-2页A4文档做下学习记录和检查信息（比如部署项目的网址），并截图证明（比如拿到徽章的信息）。提交截止时间：2023.3.31
 
 ## AWS Educate
 
@@ -20,6 +21,8 @@
 ## 腾讯云配置
 
 // TODO
+
+等待服务器需求收集完毕后下发具体登录IP和账户，使用SSH登录。
 
 ## 亚马逊云配置
 
@@ -87,9 +90,9 @@ Host myvps
 
 此时在远程资源管理器中应当可以看见myvps服务器，选择连接即可。
 
-## WebSocket项目配置
+## 采用Web3D的联网五子棋项目配置
 
-WebSocket项目是一个立体五子棋的demo，文档见[](demo/html5_websocket/html5_websocket.pdf)
+采用Web3D的联网五子棋文档见[文档](demo/html5_websocket/html5_websocket.pdf)
 
 安装该demo需要配置两个环境：nodejs和Tomcat(或Apache)
 
@@ -116,6 +119,38 @@ sudo service tomcat9 start
 此时输入`curl 127.0.0.1:8080`应当有结果显示，表示安装成功。
 
 其余配置可以参阅文档中章节3-部署中的说明。
+
+## SSM项目配置
+
+Hint：此项目有[Docker](#使用docker可选)的一键配置脚本，更加方便。
+
+**以下流程含有未经测试的部分，有疑问请在讨论版提问或联系助教**
+
+> Tomcat安装与配置
+
+见[上一章节](#采用web3d的联网五子棋项目配置)
+
+> MySQL安装与配置
+
+参见[MySQL文档](MySQL.md)
+
+安装完成后，在sql命令行中执行`source sys_schema.sql`导入数据库。
+
+> Maven安装
+
+``` bash
+sudo apt install maven
+```
+
+安装完成后在`/src/main/resources/resource/jdbc.properties`中修改MySQL的相关配置（Host，用户名和密码）等。
+
+然后执行以下命令：
+
+``` bash
+mvn dependency:resolve
+mvn -DskipTests=true package
+mv target/*.war /usr/local/tomcat/webapps/ROOT.war
+```
 
 ## 使用Docker（可选）
 
@@ -176,27 +211,40 @@ sudo docker build -t maven_tomcat .
 
 此时执行`sudo docker images`，可以看到一个叫`maven_tomcat`的镜像。
 
-> MySQL安装与配置
+> SSM项目构建
 
-参见[MySQL文档](MySQL.md)
+``` bash
+git https://github.com/xukaixout/2023-Web.git
+cd 2023-Web/lab1/demo/ssm
+```
+
+此时需要按照SSM章节中的流程为MySQL建表，并且在`/src/main/resources/resource/jdbc.properties`中修改MySQL的相关配置。
 
 > 运行容器
 
 ``` bash
-sudo docker run -idt --name demo -p <outter_port>:<inner_port> maven_tomcat
+docker build -t docker_demo .
+
+sudo docker run -idt --name demo -p <outter_port>:<inner_port> docker_demo
 ```
 
 `outter_port`和`inner_port`是宿主机和docker的端口映射关系，如`10080:80`表示宿主机将10080端口监听到的数据转发给docker容器中的80端口，此时docker容器中应当对80端口设置监听。
 
-> 部署项目
+如果你配置的是五子棋项目，则使用
+
+``` shell
+sudo docker run -idt --name demo -p <outter_port>:<inner_port> maven_tomcat
+git https://github.com/xukaixout/2023-Web.git
+cd 2023-Web/lab1/demo/html5_websocket
+```
+
+然后根据五子棋的相关说明进行配置即可。
+
+> 进入容器
 
 ``` bash
 sudo docker exec -it demo /bin/bash # 进入容器
-git https://github.com/xukaixout/2023-Web.git
-cd 2023-Web/lab1/demo/ssm # 或html5_websocket
 ```
-
-按照对应项目的需求进行配置即可。
 
 ## 错误排除
 
