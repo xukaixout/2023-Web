@@ -1,8 +1,91 @@
 # 高级Web技术Lab 1： Docker部署
 
-## 使用Docker
+## 任务说明
 
-实验要求：成功配置Docker并部署给出的项目
+1. 注册使用AWS Educate账号，完成指定学习任务
+2. 连接并配置服务器
+3. 成功配置Docker
+4. 部署给出的项目（可选）
+
+> 提交截止时间：2023.3.31
+
+## AWS Educate
+
+注册方式见[文档](docs/Amazon_Educate.pdf)
+
+我们要完成的课程是[Introduction to Cloud 101 (Labs)](https://awseducate.instructure.com/courses/746)。
+
+![](imgs/learning_target.png)
+
+## 腾讯云配置
+
+// TODO
+
+## 亚马逊云配置
+
+// TODO
+
+亚马逊资源下发后进行发布
+
+## 服务器连接
+
+> 服务器连接
+
+这里说明最基本的SSH连接方式。基本命令为
+
+``` bash
+ssh UserName@<IP> -p <Port> -i <IdentityFilePath>
+```
+
+正常情况下，服务器的SSH端口默认被设置为22，我们连接服务器时可以不带`p`参数。
+
+但在同一台服务器上需要开放多个SSH端口的情况下（如运行了多个docker容器），我们需要`p`参数指定端口。
+
+对于有密钥对的服务器，我们可以使用`i`参数指定密钥进行免密登录。（本实验可以不用）
+
+首次登录可能会出现以下提示：
+
+![](imgs/firstlogin.jpg)
+
+输入`yes`回车即可。
+
+> vscode连接
+
+推荐使用vscode连接服务器并编写代码。
+
+首先在插件商店（CTRL+Shift+X）找到Remote-SSH并安装。
+
+然后左侧栏中应当出现远程资源管理器，打开后在上方的SSH栏里点击设置，打开SSH配置文件。vscode可能给出多个配置文件地址，选择`C:\Users\<用户名>`目录下的即可。
+
+config文件的格式为
+
+``` config
+Host <your-SSH-name>
+  HostName <targetIP>
+  User <UserName>
+  Port <Port>
+  IdentityFile <IdentityFilePath>
+```
+
+举个例子，如果你的SSH命令为
+
+``` bash
+ssh test@192.168.1.1 -p 1234 -i 'test.pem'
+```
+
+在config文件中的配置即为
+
+``` config
+Host myvps
+  HostName 192.168.1.1
+  User test
+  Port 1234
+  IdentityFile test.pem
+```
+
+配置完毕后保存即可，此时在命令行中使用`ssh myvps`也可以直接登录该服务器。
+
+## 使用Docker（可选）
 
 Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的Linux或Windows机器上，也可以实现虚拟化。
 
