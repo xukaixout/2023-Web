@@ -85,6 +85,38 @@ Host myvps
 
 配置完毕后保存即可，此时在命令行中使用`ssh myvps`也可以直接登录该服务器。
 
+此时在远程资源管理器中应当可以看见myvps服务器，选择连接即可。
+
+## WebSocket项目配置
+
+WebSocket项目是一个立体五子棋的demo，文档见[](demo/html5_websocket/html5_websocket.pdf)
+
+安装该demo需要配置两个环境：nodejs和Tomcat(或Apache)
+
+使用以下命令安装`nodejs`及其包管理器`npm`：
+
+``` bash
+sudo apt install nodejs npm
+```
+
+安装完成后，在client目录和server目录中分别执行`npm install`以安装依赖项。
+
+使用以下命令安装`Tomcat`：
+
+``` bash
+sudo apt install tomcat9-admin tomcat9
+```
+
+然后开启服务
+
+``` bash
+sudo service tomcat9 start
+```
+
+此时输入`curl 127.0.0.1:8080`应当有结果显示，表示安装成功。
+
+其余配置可以参阅文档中章节3-部署中的说明。
+
 ## 使用Docker（可选）
 
 Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的Linux或Windows机器上，也可以实现虚拟化。
@@ -168,3 +200,15 @@ cd 2023-Web/lab1/demo/ssm # 或html5_websocket
 
 ## 错误排除
 
+> 启动`Tomcat9`时出现以下错误
+
+``` plain text
+touch: cannot touch '/usr/share/tomcat9/logs/catalina.out': No such file or directory
+/usr/share/tomcat9/bin/catalina.sh: 504: cannot create /usr/share/tomcat9/logs/catalina.out: Directory nonexistent
+```
+
+此错误原因是没有创建`logs`文件夹，输入以下命令修复：
+
+``` shell
+mkdir /usr/share/tomcat9/logs/
+```
