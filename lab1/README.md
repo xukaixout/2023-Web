@@ -124,7 +124,7 @@ sudo service tomcat9 start
 
 Hint：此项目有[Docker](#使用docker可选)的一键配置脚本，更加方便。
 
-**以下流程含有未经测试的部分，有疑问请在讨论版提问或联系助教**
+**以下流程如有问题请在讨论版提问或联系助教，欢迎共同讨论和提高**
 
 > Tomcat安装与配置
 
@@ -154,7 +154,7 @@ mv target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 ## 使用Docker（可选）
 
-Docker 是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的Linux或Windows机器上，也可以实现虚拟化。
+Docker是一个开源的应用容器引擎，让开发者可以打包他们的应用以及依赖包到一个可移植的镜像中，然后发布到任何流行的Linux或Windows机器上，也可以实现虚拟化。
 
 > 准备Docker环境
 
